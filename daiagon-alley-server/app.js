@@ -1,5 +1,6 @@
 require("dotenv").config();
 var express = require("express");
+var createError = require("http-errors");
 var path = require("path");
 let client = require("./db");
 const port = process.env.PORT || 5000;
@@ -47,7 +48,17 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.send(`< !DOCTYPE HTML>
+  <html>
+  <head>
+  <meta charset="utf-8"/>
+  <title>${err.status}</title>
+  </head>
+  <body>
+  <h1>${err.status}</h1>
+  <p>${err.message} </p>
+  </body>
+  </html>`);
 });
 
 // app.listen(port, () => {

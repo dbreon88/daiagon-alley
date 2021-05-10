@@ -56,7 +56,7 @@ let pool = null;
 function connect(callback) {
   if (pool == null) {
     try {
-      console.log("Connecting to postgres...");
+      console.log("Initializing postgres pool...");
       // create a postgres pool. This will automatically use enviroment variables.
       pool = new Pool();
       callback();

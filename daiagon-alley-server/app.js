@@ -12,16 +12,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const dbOptions = {
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: 5432,
-};
+// const dbOptions = {
+//   user: process.env.PGUSER,
+//   host: process.env.PGHOST,
+//   database: process.env.PGDATABASE,
+//   password: process.env.PGPASSWORD,
+//   port: 5432,
+// };
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
+app.get("/", (req, res, next) => {
+  client.query(
+    "CREATE TEMP TABLE IF NOT EXISTS table_test(pk SERIAL PRIMARY KEY);",
+    (err, result) => {
+      if (err) {
+        console.log("ERROR WITH POSTGRES QUERY: ", err.message);
+        next(err);
+      }
+      res.send(result);
+    }
+  );
 });
 
 client.connect((err) => {
@@ -30,7 +39,7 @@ client.connect((err) => {
     process.exit(1);
   } else {
     app.listen(port, () => {
-      console.log("Listening on port 5000...");
+      console.log(`Listening on port ${port}...`);
     });
   }
 });
@@ -60,9 +69,5 @@ app.use(function (err, req, res, next) {
   </body>
   </html>`);
 });
-
-// app.listen(port, () => {
-//   console.log(`App listening at http://localhost:${port}`);
-// });
 
 module.exports = app;

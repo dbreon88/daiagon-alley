@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: daiData
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  server:
+    build:
+      context: ./daiagon-alley-server
+      dockerfile: Dockerfile
+    image: daiagon-alley-server
+    container_name: daiagon-alley-server
+    command: /usr/src/app/node_modules/.bin/nodemon app.js
+    volumes:
+      - ./daiagon-alley-server/:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    # depends_on:
+    #   - mongo
+    env_file: ./daiagon-alley-server/.env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+  client:
+    build:
+      context: ./daiagon-alley-app
+      dockerfile: Dockerfile
+    image: daiagon-alley-app
+    container_name: daiagon-alley-app
+    command: npm start
+    volumes:
+      - ./daiagon-alley-app/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  data-volume:
+  node_modules:
+  web-root:
+    driver: local

@@ -1,0 +1,14 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# NodeJS specific #
+coverage/
+node_modules/
+npm-debug.log
+package-lock.json
+test/*.log
+.DS_Store
+.env
+build

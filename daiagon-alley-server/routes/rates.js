@@ -5,9 +5,9 @@ const contract = require("../ether.js");
 
 router.get("/", async function (req, res, next) {
   console.log("contract address: ", contract.address);
-  let dsrValue = await contract.getDaiSavingsRate();
-  console.log("DSR VALUE: ", dsrValue);
-  res.send(dsrValue);
+  let rates = await contract.getRates();
+  console.log("DSR VALUE: ", rates);
+  res.send(rates);
 });
 
 module.exports = router;

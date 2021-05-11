@@ -6,6 +6,9 @@ let client = require("./db");
 const port = process.env.PORT || 5000;
 
 var dsrRouter = require("./routes/dsr");
+var aaveRouter = require("./routes/aave");
+var compoundRouter = require("./routes/compound");
+var ratesRouter = require("./routes/rates");
 
 var app = express();
 
@@ -23,6 +26,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // };
 
 app.use("/dsr", dsrRouter);
+app.use("/aave", aaveRouter);
+app.use("/compound", compoundRouter);
+app.use("/rates", ratesRouter);
 
 app.get("/", (req, res, next) => {
   client.query(

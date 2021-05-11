@@ -1,8 +1,9 @@
-const { ethers } = require("ethers");
+const { ethers, BigNumber } = require("ethers");
+var utils = require("ethers").utils;
 let provider = ethers.getDefaultProvider("kovan");
-// const privateKey =
-//   "0x945e73f5c99d0415a28f83fb8715a5fe754728a2fd57dabb1fd0f32aa2347ed4";
-const address = "0xd1325d76234422C00680898023556ed2BbD91D66";
+const db = require("./db");
+
+const address = "0xed3957cc5c4f267269fd8736e0568a9f3942c2ee";
 const abi = [
   {
     inputs: [],
@@ -16,9 +17,14 @@ const abi = [
     name: "getAaveLiquidityRate",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint128",
         name: "",
-        type: "uint256",
+        type: "uint128",
+      },
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
       },
     ],
     payable: false,
@@ -73,5 +79,73 @@ const abi = [
 ];
 //var wallet = new ethers.Wallet(privateKey, provider);
 const contract = new ethers.Contract(address, abi, provider);
+
+//These functions take in the returned rates from the contract and convert them into a percent interest rate
+//Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used.
+const calculateCompound = (rate) => {
+  rate = rate.toNumber(); //The compound rate should be small enough to convert to js number. CHECK THIS TODO
+  const ethMantissa = 1e18;
+  const blocksPerDay = 6570; // 13.15 seconds per block
+  const daysPerYear = 365;
+  const supplyApy =
+    (Math.pow((rate / ethMantissa) * blocksPerDay + 1, daysPerYear) - 1) * 100;
+  //console.log(`Supply APY for ETH with compound ${supplyApy} %`);
+  return supplyApy;
+};
+
+//For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module
+const calculateDsr = (rate) => {
+  //   const divisor = BigNumber.from("10").pow(BigNumber.from("27")); //10^27
+  //   rate = rate.div(divisor); // rate/(10^27)
+  //   console.log("dsr after dividing:", rate);
+  //   rate = rate.pow(BigNumber.from("31536000")); // rate^31536000
+
+  rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test: Here is an example test rate from the docs to show that it properly converts it
+
+  const numberString = utils.formatUnits(rate, 27);
+  rate = parseFloat(numberString);
+  rate = Math.pow(rate, 31536000);
+  rate -= 1.0;
+  return rate; //Returns a Numeber. maybe change this TODO
+};
+
+const calculateAave = (rate, decimals) => {
+  const numberString = utils.formatUnits(rate, 27);
+
+  //   const divisor = BigNumber.from("10").pow(BigNumber.from(20));
+  //   rate = rate.div(divisor); // rate/[10^(decimal)]
+  //   let rateNumber = rate.toNumber();
+  //   rateNumber /= Math.pow(10, 7);
+  //   console.log("rate number:", rateNumber);
+  //   console.log(
+  //     "rate Number converted to Big Number: ",
+  //     BigNumber.from(rateNumber)
+  //   );
+  return parseFloat(numberString);
+};
+
+//Set up an event listener to listen for new blocks. For each new ETH block, query the rates and
+//add them to a new row in the db.
+provider.on("block", async function (blockNumber) {
+  try {
+    let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
+    compoundRate = calculateCompound(compoundRate);
+    daiSavingsRate = calculateDsr(daiSavingsRate);
+    aaveRate = calculateAave(aaveRate); //check this TODO
+    console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
+    // db.query(
+    //   "INSERT INTO rates(blockNum, dsr, compound, aave) VALUES ($1, $2, $3, $4);",
+    //   [blockNumber, daiSavingsRate, compoundRate, aaveRate],
+    //   (err, res) => {
+    //     if (err) {
+    //       throw { message: "Error Querying from database!", status: 500 };
+    //     }
+    //     console.log("Insert Result: ", res);
+    //   }
+    // );
+  } catch (err) {
+    console.error("Error Adding Newest Block Info to DB!! ", err);
+  }
+});
 
 module.exports = contract;

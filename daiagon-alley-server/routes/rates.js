@@ -4,10 +4,14 @@ const { ethers } = require("ethers");
 const contract = require("../ether.js");
 
 router.get("/", async function (req, res, next) {
-  console.log("contract address: ", contract.address);
-  let rates = await contract.getRates();
-  console.log("DSR VALUE: ", rates);
-  res.send(rates);
+  try {
+    console.log("contract address: ", contract.address);
+    let rates = await contract.getRates();
+    console.log("All 3 Rates: ", rates);
+    res.send(rates);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

@@ -126,26 +126,27 @@ const calculateAave = (rate, decimals) => {
 
 //Set up an event listener to listen for new blocks. For each new ETH block, query the rates and
 //add them to a new row in the db.
-provider.on("block", async function (blockNumber) {
-  try {
-    let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
-    compoundRate = calculateCompound(compoundRate);
-    daiSavingsRate = calculateDsr(daiSavingsRate);
-    aaveRate = calculateAave(aaveRate); //check this TODO
-    console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
-    db.query(
-      "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
-      [blockNumber, compoundRate, daiSavingsRate, aaveRate],
-      (err, res) => {
-        if (err) {
-          throw { message: "Error Querying from database!", status: 500 };
-        }
-        console.log("Insert Result: ", res);
-      }
-    );
-  } catch (err) {
-    console.error("Error Adding Newest Block Info to DB!! ", err);
-  }
-});
+// provider.on("block", async function (blockNumber) {
+//   try {
+//     let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
+//     compoundRate = calculateCompound(compoundRate);
+//     daiSavingsRate = calculateDsr(daiSavingsRate);
+//     aaveRate = calculateAave(aaveRate); //check this TODO
+//     console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
+//     db.query(
+//       "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
+//       [blockNumber, compoundRate, daiSavingsRate, aaveRate],
+//       (err, res) => {
+//         if (err) {
+//           throw { message: "Error Querying from database!", status: 500 };
+//         }
+//         // console.log("Insert Result: ", res);
+//         console.log("Inserted data for block #: ", blockNumber);
+//       }
+//     );
+//   } catch (err) {
+//     console.error("Error Adding Newest Block Info to DB!! ", err);
+//   }
+// });
 
 module.exports = contract;

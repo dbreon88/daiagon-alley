@@ -5,6 +5,8 @@ var path = require("path");
 let client = require("./db");
 const port = process.env.PORT || 5000;
 
+var dsrRouter = require("./routes/dsr");
+
 var app = express();
 
 //app.use(logger("dev"));
@@ -19,6 +21,8 @@ app.use(express.static(path.join(__dirname, "public")));
 //   password: process.env.PGPASSWORD,
 //   port: 5432,
 // };
+
+app.use("/dsr", dsrRouter);
 
 app.get("/", (req, res, next) => {
   client.query(

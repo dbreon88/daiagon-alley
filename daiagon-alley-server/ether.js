@@ -133,16 +133,16 @@ provider.on("block", async function (blockNumber) {
     daiSavingsRate = calculateDsr(daiSavingsRate);
     aaveRate = calculateAave(aaveRate); //check this TODO
     console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
-    // db.query(
-    //   "INSERT INTO rates(blockNum, dsr, compound, aave) VALUES ($1, $2, $3, $4);",
-    //   [blockNumber, daiSavingsRate, compoundRate, aaveRate],
-    //   (err, res) => {
-    //     if (err) {
-    //       throw { message: "Error Querying from database!", status: 500 };
-    //     }
-    //     console.log("Insert Result: ", res);
-    //   }
-    // );
+    db.query(
+      "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
+      [blockNumber, compoundRate, daiSavingsRate, aaveRate],
+      (err, res) => {
+        if (err) {
+          throw { message: "Error Querying from database!", status: 500 };
+        }
+        console.log("Insert Result: ", res);
+      }
+    );
   } catch (err) {
     console.error("Error Adding Newest Block Info to DB!! ", err);
   }

@@ -5,7 +5,7 @@ import { getPastRates } from "../models/rates";
 
 const useStyles = makeStyles({
   root: {
-    height: "100vh",
+    height: "80vh",
     padding: "3%",
   },
   bullet: {

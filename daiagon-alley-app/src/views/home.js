@@ -73,10 +73,12 @@ function Home() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" href="https://aave.com">
+              <Button size="small" href="https://compound.finance">
                 Visit Site
               </Button>
-              <Button size="small">See Graph</Button>
+              <Button size="small" href="/history">
+                See Graph
+              </Button>
             </CardActions>
           </Card>
         </Grid>
@@ -102,10 +104,12 @@ function Home() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" href="https://aave.com">
+              <Button size="small" href="https://makerdao.com/en/">
                 Visit Site
               </Button>
-              <Button size="small">See Graph</Button>
+              <Button size="small" href="/history">
+                See Graph
+              </Button>
             </CardActions>
           </Card>
         </Grid>
@@ -134,7 +138,9 @@ function Home() {
               <Button size="small" href="https://aave.com">
                 Visit Site
               </Button>
-              <Button size="small">See Graph</Button>
+              <Button size="small" href="/history">
+                See Graph
+              </Button>
             </CardActions>
           </Card>
         </Grid>

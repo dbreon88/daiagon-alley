@@ -6,11 +6,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { getCurrentRates } from "../models/rates";
+import ReactLoading from "react-loading";
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
   },
+  loading: { alignItems: "center", justifyContent: "center" },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
@@ -26,9 +28,9 @@ const useStyles = makeStyles({
 
 function Home() {
   const classes = useStyles();
-  const [compound, setCompound] = useState(0);
-  const [dsr, setDsr] = useState(0);
-  const [aave, setAave] = useState(0);
+  const [compound, setCompound] = useState(null);
+  const [dsr, setDsr] = useState(null);
+  const [aave, setAave] = useState(null);
 
   const loadData = async () => {
     const rateData = await getCurrentRates();
@@ -43,108 +45,118 @@ function Home() {
   }, []);
   return (
     <>
-      <Grid
-        container
-        spacing={10}
-        direction="row"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item>
-          <Card className={classes.root}>
-            <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-              >
-                Compound Interest Rate
-              </Typography>
-              <Typography variant="h2" component="h2">
-                {compound.toFixed(2)}%
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Percent APY
-              </Typography>
-              <Typography variant="body2" component="p">
-                This is the current interest rate <br /> on the Compound.finance
-                platform.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" href="https://compound.finance">
-                Visit Site
-              </Button>
-              <Button size="small" href="/history">
-                See Graph
-              </Button>
-            </CardActions>
-          </Card>
+      {aave === null || dsr === null || compound === null ? (
+        <ReactLoading
+          type={"blocks"}
+          color={"blue"}
+          height={"20%"}
+          width={"80%"}
+          className={classes.loading}
+        />
+      ) : (
+        <Grid
+          container
+          spacing={10}
+          direction="row"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Grid item>
+            <Card className={classes.root}>
+              <CardContent>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  Compound Interest Rate
+                </Typography>
+                <Typography variant="h2" component="h2">
+                  {compound.toFixed(2)}%
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Percent APY
+                </Typography>
+                <Typography variant="body2" component="p">
+                  This is the current interest rate <br /> on the
+                  Compound.finance platform.
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" href="https://compound.finance">
+                  Visit Site
+                </Button>
+                <Button size="small" href="/history">
+                  See Graph
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Card className={classes.root}>
+              <CardContent>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  Dai Savings Rate
+                </Typography>
+                <Typography variant="h2" component="h2">
+                  {dsr.toFixed(2)}%
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Percent APY
+                </Typography>
+                <Typography variant="body2" component="p">
+                  This is the current interest rate <br /> from MakeDAO's Dai
+                  Savings rate.
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" href="https://makerdao.com/en/">
+                  Visit Site
+                </Button>
+                <Button size="small" href="/history">
+                  See Graph
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Card className={classes.root}>
+              <CardContent>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  Aave Interest Rate
+                </Typography>
+                <Typography variant="h2" component="h2">
+                  {aave.toFixed(2)}%
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Percent APY
+                </Typography>
+                <Typography variant="body2" component="p">
+                  This is the current interest rate <br /> on the Aave lending
+                  platform.
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" href="https://aave.com">
+                  Visit Site
+                </Button>
+                <Button size="small" href="/history">
+                  See Graph
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Card className={classes.root}>
-            <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-              >
-                Dai Savings Rate
-              </Typography>
-              <Typography variant="h2" component="h2">
-                {dsr.toFixed(2)}%
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Percent APY
-              </Typography>
-              <Typography variant="body2" component="p">
-                This is the current interest rate <br /> from MakeDAO's Dai
-                Savings rate.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" href="https://makerdao.com/en/">
-                Visit Site
-              </Button>
-              <Button size="small" href="/history">
-                See Graph
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item>
-          <Card className={classes.root}>
-            <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-              >
-                Aave Interest Rate
-              </Typography>
-              <Typography variant="h2" component="h2">
-                {aave.toFixed(2)}%
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Percent APY
-              </Typography>
-              <Typography variant="body2" component="p">
-                This is the current interest rate <br /> on the Aave lending
-                platform.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" href="https://aave.com">
-                Visit Site
-              </Button>
-              <Button size="small" href="/history">
-                See Graph
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      </Grid>
+      )}
     </>
   );
 }

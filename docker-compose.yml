@@ -27,8 +27,6 @@ services:
       - db
     ports:
       - "5000:5000"
-    # depends_on:
-    #   - mongo
     env_file: ./daiagon-alley-server/.env
     environment:
       - NODE_ENV=development

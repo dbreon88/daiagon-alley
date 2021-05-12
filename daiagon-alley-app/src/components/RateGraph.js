@@ -13,8 +13,8 @@ const RateGraph = ({ data }) => {
       yScale={{
         type: "linear",
         min: "auto",
-        max: "auto",
-        stacked: true,
+        max: "auto", //CHANGE THIS BACK TO AUTO TODO
+        stacked: false,
         reverse: false,
       }}
       axisTop={null}
@@ -23,7 +23,7 @@ const RateGraph = ({ data }) => {
         orient: "bottom",
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
+        tickRotation: -90,
         legend: "Block Number",
         legendOffset: 36,
         legendPosition: "middle",
@@ -37,16 +37,17 @@ const RateGraph = ({ data }) => {
         legendOffset: -40,
         legendPosition: "middle",
       }}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: "spectral" }}
       pointSize={10}
-      pointColor={{ theme: "background" }}
+      pointColor={{ from: "color", modifiers: [] }}
       pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
+      pointBorderColor={{ from: "color", modifiers: [] }}
       pointLabelYOffset={-12}
+      enableSlices="x"
       useMesh={true}
       legends={[
         {
-          anchor: "bottom-right",
+          anchor: "right",
           direction: "column",
           justify: false,
           translateX: 100,

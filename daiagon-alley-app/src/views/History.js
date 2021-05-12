@@ -27,11 +27,11 @@ export default function History() {
 
   const loadData = async () => {
     const rateData = await getPastRates();
-    console.log("RATE DATA: ", rateData);
+    console.log("RATE DATA: ", rateData.data);
+    setData(rateData.data);
   };
 
   useEffect(() => {
-    console.log("in use effect");
     loadData();
   }, []);
 

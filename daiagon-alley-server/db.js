@@ -22,15 +22,23 @@ function connect(callback) {
 }
 
 //to use a client in the pool and make a single query
-const query = (text, params, callback) => {
-  console.log("query called");
+// const query = (text, params, callback) => {
+//   const start = Date.now();
+//   return pool.query(text, params, (err, res) => {
+//     const duration = Date.now() - start;
+//     // console.log("Executed query", { text, duration, rows: res.rowCount });
+//     callback(err, res);
+//   });
+// };
+
+//to use a client in the pool and make a single query
+async function query(text, params) {
   const start = Date.now();
-  return pool.query(text, params, (err, res) => {
-    const duration = Date.now() - start;
-    console.log("Executed query", { text, duration, rows: res.rowCount });
-    callback(err, res);
-  });
-};
+  const res = await pool.query(text, params);
+  const duration = Date.now() - start;
+  console.log("executed query", { text, duration, rows: res.rowCount });
+  return res;
+}
 
 //If you have a more intensive transaction and need to check out a client. Make sure to release client when using this.
 const getClient = (callback) => {

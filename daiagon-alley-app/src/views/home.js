@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Card } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { getCurrentRates } from "../models/rates";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,21 @@ const useStyles = makeStyles({
 
 function Home() {
   const classes = useStyles();
+  const [compound, setCompound] = useState(0);
+  const [dsr, setDsr] = useState(0);
+  const [aave, setAave] = useState(0);
+
+  const loadData = async () => {
+    const rateData = await getCurrentRates();
+    console.log("CURRENT RATE DATA: ", rateData.data);
+    setCompound(rateData.data[0] * 100);
+    setDsr(rateData.data[1] * 100);
+    setAave(rateData.data[2] * 100);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
   return (
     <>
       <Grid
@@ -46,7 +62,7 @@ function Home() {
                 Compound Interest Rate
               </Typography>
               <Typography variant="h2" component="h2">
-                20%
+                {compound.toFixed(2)}%
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Percent APY
@@ -75,7 +91,7 @@ function Home() {
                 Dai Savings Rate
               </Typography>
               <Typography variant="h2" component="h2">
-                14%
+                {dsr.toFixed(2)}%
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Percent APY
@@ -104,7 +120,7 @@ function Home() {
                 Aave Interest Rate
               </Typography>
               <Typography variant="h2" component="h2">
-                20%
+                {aave.toFixed(2)}%
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Percent APY

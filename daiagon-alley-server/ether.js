@@ -95,12 +95,7 @@ const calculateCompound = (rate) => {
 
 //For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module
 const calculateDsr = (rate) => {
-  //   const divisor = BigNumber.from("10").pow(BigNumber.from("27")); //10^27
-  //   rate = rate.div(divisor); // rate/(10^27)
-  //   console.log("dsr after dividing:", rate);
-  //   rate = rate.pow(BigNumber.from("31536000")); // rate^31536000
-
-  rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test: Here is an example test rate from the docs to show that it properly converts it
+  rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test TODO RE COMMENT: Here is an example test rate from the docs to show that it properly converts it
 
   const numberString = utils.formatUnits(rate, 27);
   rate = parseFloat(numberString);
@@ -111,31 +106,21 @@ const calculateDsr = (rate) => {
 
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
-
-  //   const divisor = BigNumber.from("10").pow(BigNumber.from(20));
-  //   rate = rate.div(divisor); // rate/[10^(decimal)]
-  //   let rateNumber = rate.toNumber();
-  //   rateNumber /= Math.pow(10, 7);
-  //   console.log("rate number:", rateNumber);
-  //   console.log(
-  //     "rate Number converted to Big Number: ",
-  //     BigNumber.from(rateNumber)
-  //   );
   return parseFloat(numberString);
 };
 
 //Set up an event listener to listen for new blocks. For each new ETH block, query the rates and
-//add them to a new row in the db.
+//add them to a new row in the db. UNCOMMENT TODO
 // provider.on("block", async function (blockNumber) {
 //   try {
 //     let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
 //     compoundRate = calculateCompound(compoundRate);
 //     daiSavingsRate = calculateDsr(daiSavingsRate);
 //     aaveRate = calculateAave(aaveRate); //check this TODO
-//     console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
+//     //console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
 //     db.query(
 //       "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
-//       [blockNumber, compoundRate, daiSavingsRate, aaveRate],
+//       [blockNumber, compoundRate * 100, daiSavingsRate * 100, aaveRate * 100],
 //       (err, res) => {
 //         if (err) {
 //           throw { message: "Error Querying from database!", status: 500 };

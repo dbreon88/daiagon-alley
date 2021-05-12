@@ -1,16 +1,18 @@
 require("dotenv").config();
 var express = require("express");
+const cors = require("cors");
 var createError = require("http-errors");
 var path = require("path");
 let client = require("./db");
 const port = process.env.PORT || 5000;
 
+var app = express();
+app.use(cors());
+
 var dsrRouter = require("./routes/dsr");
 var aaveRouter = require("./routes/aave");
 var compoundRouter = require("./routes/compound");
 var ratesRouter = require("./routes/rates");
-
-var app = express();
 
 //app.use(logger("dev"));
 app.use(express.json());
@@ -29,19 +31,6 @@ app.use("/dsr", dsrRouter);
 app.use("/aave", aaveRouter);
 app.use("/compound", compoundRouter);
 app.use("/rates", ratesRouter);
-
-app.get("/", (req, res, next) => {
-  client.query(
-    "CREATE TEMP TABLE IF NOT EXISTS table_test(pk SERIAL PRIMARY KEY);",
-    (err, result) => {
-      if (err) {
-        console.log("ERROR WITH POSTGRES QUERY: ", err.message);
-        next(err);
-      }
-      res.send(result);
-    }
-  );
-});
 
 client.connect((err) => {
   if (err) {

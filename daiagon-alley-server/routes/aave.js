@@ -3,6 +3,7 @@ var router = express.Router();
 const { ethers, BigNumber, utils, Uint8Array } = require("ethers");
 const contract = require("../ether.js");
 
+//TODO concer this result
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
 

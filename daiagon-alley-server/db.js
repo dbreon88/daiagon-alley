@@ -1,53 +1,4 @@
-// //File to manage connections with postgres database
-// const { Client } = require("pg");
-// let client = null;
-
-// // create a connection to url and call callback()
-// function connect(options, callback) {
-//   if (client == null) {
-//     // create a postgres client
-//     client = new Client(options);
-//     // establish a new connection
-//     client.connect((err) => {
-//       if (err) {
-//         // error occurred during connection. Test this
-//         client = null;
-//         callback(err);
-//       } else {
-//         // all done
-//         callback();
-//       }
-//     });
-//   } else {
-//     // connection was established earlier. just call callback()
-//     callback();
-//   }
-// }
-
-// // get database using pre-established connection
-// // function db(dbName) {
-// //   return client.db(dbName);
-// // }
-
-// // close open connection
-// function close() {
-//   if (client) {
-//     client
-//       .end()
-//       .then(() => console.log("postgres client has disconnected"))
-//       .catch((err) =>
-//         console.error("error during disconnection with postgres", err.stack)
-//       );
-//     client = null;
-//   }
-// }
-
-// // export connect(), db() and close() from the module
-// module.exports = {
-//   connect,
-//   //   db,
-//   close,
-// };
+//File to manage connections with postgres database
 
 const { Pool } = require("pg");
 let pool = null;
@@ -71,14 +22,23 @@ function connect(callback) {
 }
 
 //to use a client in the pool and make a single query
-const query = (text, params, callback) => {
+// const query = (text, params, callback) => {
+//   const start = Date.now();
+//   return pool.query(text, params, (err, res) => {
+//     const duration = Date.now() - start;
+//     // console.log("Executed query", { text, duration, rows: res.rowCount });
+//     callback(err, res);
+//   });
+// };
+
+//to use a client in the pool and make a single query
+async function query(text, params) {
   const start = Date.now();
-  return pool.query(text, params, (err, res) => {
-    const duration = Date.now() - start;
-    console.log("Executed query", { text, duration, rows: res.rowCount });
-    callback(err, res);
-  });
-};
+  const res = await pool.query(text, params);
+  const duration = Date.now() - start;
+  console.log("executed query", { text, duration, rows: res.rowCount });
+  return res;
+}
 
 //If you have a more intensive transaction and need to check out a client. Make sure to release client when using this.
 const getClient = (callback) => {

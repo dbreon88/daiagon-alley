@@ -24,6 +24,11 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 function Home() {
@@ -33,11 +38,18 @@ function Home() {
   const [aave, setAave] = useState(null);
 
   const loadData = async () => {
-    const rateData = await getCurrentRates();
-    console.log("CURRENT RATE DATA: ", rateData.data);
-    setCompound(rateData.data[0] * 100);
-    setDsr(rateData.data[1] * 100);
-    setAave(rateData.data[2] * 100);
+    try {
+      const rateData = await getCurrentRates();
+      console.log("CURRENT RATE DATA: ", rateData.data);
+      setCompound(rateData.data[0] * 100);
+      setDsr(rateData.data[1] * 100);
+      setAave(rateData.data[2] * 100);
+    } catch (err) {
+      console.log("Error fetching Data: ", err);
+      alert(
+        "There was an error fetching the data for this page. Please try again later."
+      );
+    }
   };
 
   useEffect(() => {
@@ -46,13 +58,14 @@ function Home() {
   return (
     <>
       {aave === null || dsr === null || compound === null ? (
-        <ReactLoading
-          type={"blocks"}
-          color={"blue"}
-          height={"20%"}
-          width={"80%"}
-          className={classes.loading}
-        />
+        <div className={classes.container}>
+          <ReactLoading
+            type={"cubes"}
+            color={"blue"}
+            height={"10%"}
+            width={"40%"}
+          />
+        </div>
       ) : (
         <Grid
           container

@@ -1,3 +1,4 @@
+#NOTE: THE .ENV FILE SHOULD BE INCLUDED BUT I HAVE OMMITED IT FOR PORTABILITY SO ANYONE CAN CLONE AND RUN THIS PROJECT
 # General
 .DS_Store
 .AppleDouble
@@ -9,6 +10,5 @@ node_modules/
 npm-debug.log
 package-lock.json
 test/*.log
-.DS_Store
-.env
+#.env
 build

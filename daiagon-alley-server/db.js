@@ -1,5 +1,4 @@
-//File to manage connections with postgres database
-
+//File to create and manage connections with postgres database
 const { Pool } = require("pg");
 let pool = null;
 
@@ -8,7 +7,7 @@ function connect(callback) {
   if (pool == null) {
     try {
       console.log("Initializing postgres pool...");
-      // create a postgres pool. This will automatically use enviroment variables.
+      // create a postgres pool instance. This will automatically use enviroment variables.
       pool = new Pool();
       callback();
     } catch (err) {
@@ -21,6 +20,7 @@ function connect(callback) {
   }
 }
 
+// Callback version of query.
 //to use a client in the pool and make a single query
 // const query = (text, params, callback) => {
 //   const start = Date.now();

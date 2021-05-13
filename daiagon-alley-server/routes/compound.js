@@ -21,7 +21,7 @@ const calculateCompound = (rate) => {
 };
 
 //TODO convert this
-//Call my contract to get compound supply rate which is the interest rate for the compound platform.
+//On GET to /compound -> call my contract to get compound supply rate.
 router.get("/", async function (req, res, next) {
   try {
     let supplyRate = await contract.getSupplyRate();

@@ -1,3 +1,8 @@
+/* Routes for grabbing data from all three platforms. 
+It calls my smart contract (currently deployed on the kovan network) to 
+get the current rates on the platforms.
+ */
+
 var express = require("express");
 var router = express.Router();
 const { ethers, BigNumber } = require("ethers");
@@ -31,11 +36,14 @@ const calculateDsr = (rate) => {
   return rate; //Returns a Number. maybe change this TODO
 };
 
+/* The Aave smart contract returns the result in Ray 
+units. This converts Ray to a float representing the rate */
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
   return parseFloat(numberString);
 };
 
+//On GET to rates/ -> Call my smart contract to get all three of the interest rates
 router.get("/", async function (req, res, next) {
   console.log("GET / CALLED");
   try {

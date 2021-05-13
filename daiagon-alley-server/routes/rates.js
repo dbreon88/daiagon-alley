@@ -52,8 +52,9 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+/* Get the rates for all 3 providers for all the highest 128 blocks stored in the database. 
+This will represent the most recent 128 blocks as the database should have the most recent blocks */
 router.get("/past", async function (req, res, next) {
-  console.log("Past Rates called");
   try {
     const compound = await db.query(
       "select cast (block_number as INTEGER) as x, compound as y from rates where block_number >= (select max(block_number) from rates) - 128"
@@ -64,7 +65,6 @@ router.get("/past", async function (req, res, next) {
     const aave = await db.query(
       "select cast (block_number as INTEGER) as x, aave as y from rates where block_number >= (select max(block_number) from rates) - 128"
     );
-    console.log("type of big int", typeof compound.rows[0].x);
     const result = [
       { id: "Compound", color: "hsl(157, 76%, 46%)", data: compound.rows },
       { id: "DSR", color: "hsl(261, 37%, 16%)", data: dsr.rows },

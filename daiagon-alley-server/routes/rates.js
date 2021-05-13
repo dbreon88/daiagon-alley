@@ -6,8 +6,8 @@ const contract = require("../ether.js");
 const db = require("../db");
 
 // TODO MOVE THESSE TO COMMON FOLDER
-//These functions take in the returned rates from the contract and convert them into a percent interest rate
-//Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used.
+/* These functions take in the returned rates from the contract and convert them into a percent interest rate
+Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used. */
 const calculateCompound = (rate) => {
   rate = rate.toNumber(); //The compound rate should be small enough to convert to js number. CHECK THIS TODO
   const ethMantissa = 1e18;
@@ -19,7 +19,8 @@ const calculateCompound = (rate) => {
   return supplyApy;
 };
 
-//For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module
+/* Convert the returned value from MakerDAO's smart contract to the float rate
+For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module */
 const calculateDsr = (rate) => {
   rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test TODO RE COMMENT: Here is an example test rate from the docs to show that it properly converts it
 
@@ -40,9 +41,6 @@ router.get("/", async function (req, res, next) {
   try {
     console.log("contract address: ", contract.address);
     let rates = await contract.getRates();
-    // rates[0] = calculateCompound(rates[0]);
-    // rates[1] = calculateDsr(rates[1]);
-    // rates[2] = calculateAave(rates[2]);
     console.log("All 3 Rates: ", rates);
     res.send([
       calculateCompound(rates[0]),
@@ -76,10 +74,13 @@ router.get("/past", async function (req, res, next) {
   } catch (err) {
     // throw { message: "Error Querying from database!", status: 500 };
     console.log("Error Selecting rates from database: ", err);
-    next(err); //TODO check this
+    //next(err); //TODO check this
   }
 });
 
+/* This function also gets the past rates but returns it row by row as it is structured in the db. 
+The above function is currently used as the front end graph library wants a list of block number + rate 
+pairings for each line on the graph. */
 //router.get("/past", async function (req, res, next) {
 //   console.log("Past Rates called");
 

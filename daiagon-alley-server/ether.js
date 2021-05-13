@@ -93,7 +93,8 @@ const calculateCompound = (rate) => {
   return supplyApy;
 };
 
-//For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module
+/* Convert the returned value from MakerDAO's smart contract to the float rate
+For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module */
 const calculateDsr = (rate) => {
   rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test TODO RE COMMENT: Here is an example test rate from the docs to show that it properly converts it
 
@@ -101,9 +102,11 @@ const calculateDsr = (rate) => {
   rate = parseFloat(numberString);
   rate = Math.pow(rate, 31536000);
   rate -= 1.0;
-  return rate; //Returns a Numeber. maybe change this TODO
+  return rate; //Returns a Number type. maybe change this TODO
 };
 
+/* The Aave smart contract returns the result in Ray 
+units. This converts Ray to a float representing the rate */
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
   return parseFloat(numberString);

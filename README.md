@@ -1,6 +1,8 @@
 Daiagon Alley
 Made By Dylan Breon
 
+This project is intended to be a dashboard to compare the interest rate for those lending the DAI stable coin
+through 3 different providers: - Compound Finance - The Dai Savings Rate (by MakerDAO) - Aaave Protocal
 Getting started:
 Prerequisites:
 -Latest version of docker installed

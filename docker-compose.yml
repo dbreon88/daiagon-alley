@@ -15,7 +15,7 @@ services:
       POSTGRES_DB: daiData
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./dbInit:/docker-entrypoint-initdb.d/
+      - ./dbInit:/dbInit
     ports:
       - "5432:5432"
     networks:

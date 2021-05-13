@@ -1,3 +1,8 @@
+/* Routes for grabbing data from all three platforms. 
+It calls my smart contract (currently deployed on the kovan network) to 
+get the current rates on the platforms.
+ */
+
 var express = require("express");
 var router = express.Router();
 const { ethers, BigNumber } = require("ethers");
@@ -6,8 +11,8 @@ const contract = require("../ether.js");
 const db = require("../db");
 
 // TODO MOVE THESSE TO COMMON FOLDER
-//These functions take in the returned rates from the contract and convert them into a percent interest rate
-//Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used.
+/* These functions take in the returned rates from the contract and convert them into a percent interest rate
+Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used. */
 const calculateCompound = (rate) => {
   rate = rate.toNumber(); //The compound rate should be small enough to convert to js number. CHECK THIS TODO
   const ethMantissa = 1e18;
@@ -19,7 +24,8 @@ const calculateCompound = (rate) => {
   return supplyApy;
 };
 
-//For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module
+/* Convert the returned value from MakerDAO's smart contract to the float rate
+For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module */
 const calculateDsr = (rate) => {
   rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test TODO RE COMMENT: Here is an example test rate from the docs to show that it properly converts it
 
@@ -30,19 +36,19 @@ const calculateDsr = (rate) => {
   return rate; //Returns a Number. maybe change this TODO
 };
 
+/* The Aave smart contract returns the result in Ray 
+units. This converts Ray to a float representing the rate */
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
   return parseFloat(numberString);
 };
 
+//On GET to rates/ -> Call my smart contract to get all three of the interest rates
 router.get("/", async function (req, res, next) {
   console.log("GET / CALLED");
   try {
     console.log("contract address: ", contract.address);
     let rates = await contract.getRates();
-    // rates[0] = calculateCompound(rates[0]);
-    // rates[1] = calculateDsr(rates[1]);
-    // rates[2] = calculateAave(rates[2]);
     console.log("All 3 Rates: ", rates);
     res.send([
       calculateCompound(rates[0]),
@@ -54,8 +60,9 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+/* Get the rates for all 3 providers for all the highest 128 blocks stored in the database. 
+This will represent the most recent 128 blocks as the database should have the most recent blocks */
 router.get("/past", async function (req, res, next) {
-  console.log("Past Rates called");
   try {
     const compound = await db.query(
       "select cast (block_number as INTEGER) as x, compound as y from rates where block_number >= (select max(block_number) from rates) - 128"
@@ -66,7 +73,6 @@ router.get("/past", async function (req, res, next) {
     const aave = await db.query(
       "select cast (block_number as INTEGER) as x, aave as y from rates where block_number >= (select max(block_number) from rates) - 128"
     );
-    console.log("type of big int", typeof compound.rows[0].x);
     const result = [
       { id: "Compound", color: "hsl(157, 76%, 46%)", data: compound.rows },
       { id: "DSR", color: "hsl(261, 37%, 16%)", data: dsr.rows },
@@ -76,10 +82,13 @@ router.get("/past", async function (req, res, next) {
   } catch (err) {
     // throw { message: "Error Querying from database!", status: 500 };
     console.log("Error Selecting rates from database: ", err);
-    next(err); //TODO check this
+    //next(err); //TODO check this
   }
 });
 
+/* This function also gets the past rates but returns it row by row as it is structured in the db. 
+The above function is currently used as the front end graph library wants a list of block number + rate 
+pairings for each line on the graph. */
 //router.get("/past", async function (req, res, next) {
 //   console.log("Past Rates called");
 

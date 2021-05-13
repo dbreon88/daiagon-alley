@@ -1,26 +1,20 @@
+/* All the routes for grabbing data related to the Aave Platform. 
+It calls my smart contract (currently deployed on the kovan network) to 
+get the current dai interest rate on the Aave platform.
+ */
 var express = require("express");
 var router = express.Router();
 const { ethers, BigNumber, utils, Uint8Array } = require("ethers");
 const contract = require("../ether.js");
 
-//TODO concer this result
+/* The Aave smart contract returns the result in Ray 
+units. This converts Ray to a float representing the rate */
 const calculateAave = (rate, decimals) => {
   const numberString = utils.formatUnits(rate, 27);
-
-  //   const divisor = BigNumber.from("10").pow(BigNumber.from(20));
-  //   rate = rate.div(divisor); // rate/[10^(decimal)]
-  //   let rateNumber = rate.toNumber();
-  //   rateNumber /= Math.pow(10, 7);
-  //   console.log("rate number:", rateNumber);
-  //   console.log(
-  //     "rate Number converted to Big Number: ",
-  //     BigNumber.from(rateNumber)
-  //   );
-  console.log("Rate as fraction: ", numberString);
   return parseFloat(numberString);
 };
 
-//Call contract to get Aave liquidity rate which is the interest rate for the Aave platform.
+//on GET call to /aave -> Call contract to get Aave liquidity rate aka interest rate
 router.get("/", async function (req, res, next) {
   try {
     let [liquidityRate, decimals] = await contract.getAaveLiquidityRate();
@@ -28,8 +22,8 @@ router.get("/", async function (req, res, next) {
     console.log("Aave Liquididty Rate: ", liquidityRate);
     res.send({ rate: liquidityRate });
   } catch (err) {
-    console.log("Error Getting AAVE rate!");
-    next(err);
+    console.log("Error Getting AAVE rate: ", err);
+    //next(err);
   }
 });
 

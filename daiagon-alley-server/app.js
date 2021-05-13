@@ -1,37 +1,35 @@
+/* Entry point for the Server. Configures the application and starts
+the server */
 require("dotenv").config();
 var express = require("express");
 const cors = require("cors");
 var createError = require("http-errors");
 var path = require("path");
-let client = require("./db");
+let client = require("./db"); //database instance
 const port = process.env.PORT || 5000;
 
 var app = express();
+//Enable cross origin requests so that react can call express backend
 app.use(cors());
 
 var dsrRouter = require("./routes/dsr");
 var aaveRouter = require("./routes/aave");
 var compoundRouter = require("./routes/compound");
 var ratesRouter = require("./routes/rates");
+const { Server } = require("http");
 
 //app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// const dbOptions = {
-//   user: process.env.PGUSER,
-//   host: process.env.PGHOST,
-//   database: process.env.PGDATABASE,
-//   password: process.env.PGPASSWORD,
-//   port: 5432,
-// };
-
+//Initialize base url for express routes
 app.use("/dsr", dsrRouter);
 app.use("/aave", aaveRouter);
 app.use("/compound", compoundRouter);
 app.use("/rates", ratesRouter);
 
+//Instantiate a postgres pool instance to use for queries
 client.connect((err) => {
   if (err) {
     console.log("Unable to connect to Postgres.");
@@ -48,7 +46,9 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
+/* 
+Error handler
+Can be used with next() call in endpoints */
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

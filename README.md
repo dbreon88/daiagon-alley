@@ -22,3 +22,9 @@ And then:
 If you want to just build the project and not run it you can run:
 
     make build
+
+To stop the docker containers simply press cntrl + c in the terminal that they are running in.
+
+If you would rather run it in the background of your terminal instance you can run it each time with the command
+
+docker compose up -d

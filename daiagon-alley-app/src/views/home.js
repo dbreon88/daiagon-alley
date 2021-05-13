@@ -80,7 +80,7 @@ function Home() {
               <CardContent>
                 <Typography
                   className={classes.title}
-                  color="textSecondary"
+                  color="textPrimary"
                   gutterBottom
                 >
                   Compound Interest Rate
@@ -111,7 +111,7 @@ function Home() {
               <CardContent>
                 <Typography
                   className={classes.title}
-                  color="textSecondary"
+                  color="textPrimary"
                   gutterBottom
                 >
                   Dai Savings Rate
@@ -142,7 +142,7 @@ function Home() {
               <CardContent>
                 <Typography
                   className={classes.title}
-                  color="textSecondary"
+                  color="textPrimary"
                   gutterBottom
                 >
                   Aave Interest Rate

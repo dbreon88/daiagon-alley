@@ -15,7 +15,7 @@ const RateGraph = ({ data }) => {
       yScale={{
         type: "linear",
         min: "auto",
-        max: "auto", //CHANGE THIS BACK TO AUTO TODO
+        max: "auto",
         stacked: false,
         reverse: false,
       }}

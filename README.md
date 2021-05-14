@@ -25,7 +25,7 @@ For the first run of the app, start by running the following command within the 
 
     make migrate
 
-This will start the containers, and create the necessary table to store our rates within the postgres database.
+This will start the containers, and create the necessary table to store our rates within the postgres database. If it fails locally on your very first run, just run it again.
 
 To run the project any other occasion you simply need to call the following:
 
@@ -71,11 +71,15 @@ If you want to run docker in the forefront so you can see the log in the command
 
 - Explore server side rendering options. My stack allows for flexible switching of server vs client side processing and rendering. **ALL** the kids these days are chatting about "SSR" apps and their support of fast initial page loads. While I do not think this application should totally become SSR, It deserves some trial as my site has a simple UI and is a read only site with no writes.
 
-- Make it more pretty!!: get on that css grind
+- More db security. SQL injection prevention. Use prepared statements (which may speed things up as well)
+
+- Make it more pretty: get on that css grind
+
+- MAKE A DARK MODE
 
 ---
 
-### Other noteables:
+### Other notables:
 
 - My smart contract is currently deployed on the Kovan test network. The numbers for these rates are all over the place on this network which means my application data looks **very** odd at times. This is **especially** apparent on the graph.
 
@@ -95,7 +99,7 @@ and then:
 
     make migrate
 
-**USE THIS DOCKER COMMAND AT OWN RISK** This clears out volumes, images, containers and other docker data that could be important to other instances you have.
+**USE THIS DOCKER COMMAND AT OWN RISK** This clears out volumes, images, containers and other docker data that could be important to other instances you have. (it's overkill for sure but a nice refresh feels nice, doesn't it?)
 
 #### Awesome Resources:
 
@@ -116,3 +120,9 @@ and then:
 - https://nivo.rocks
 
 Email me if you have any questions or enjoy the project!
+
+deebreemail@gmail.com
+
+---
+
+_Dylan Breon - 2021_

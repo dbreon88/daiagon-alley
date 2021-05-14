@@ -95,22 +95,22 @@ const contract = new ethers.Contract(address, abi, provider);
 add them to a new row in the db. 
 In a production enviroment this would best be run in a background process to prevent flooding 
 my network with requests */
-// TODO uncomment this to start listener. It is commented out to prevent too much traffic on the network
+//If you are doing some testing or just playing around and dont want live updates you can comment this out
 
-// provider.on("block", async function (blockNumber) {
-//   try {
-//     let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
-//     compoundRate = calculateCompound(compoundRate);
-//     daiSavingsRate = calculateDsr(daiSavingsRate);
-//     aaveRate = calculateAave(aaveRate); //check this TODO
-//     //console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
-//     await db.query(
-//       "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
-//       [blockNumber, compoundRate * 100, daiSavingsRate * 100, aaveRate * 100]
-//     );
-//   } catch (err) {
-//     console.error("Error Adding Newest Block Info to DB!! ", err);
-//   }
-// });
+provider.on("block", async function (blockNumber) {
+  try {
+    let [compoundRate, daiSavingsRate, aaveRate] = await contract.getRates();
+    compoundRate = calculateCompound(compoundRate);
+    daiSavingsRate = calculateDsr(daiSavingsRate);
+    aaveRate = calculateAave(aaveRate);
+    //console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
+    await db.query(
+      "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
+      [blockNumber, compoundRate * 100, daiSavingsRate * 100, aaveRate * 100]
+    );
+  } catch (err) {
+    console.error("Error Adding Newest Block Info to DB!! ", err);
+  }
+});
 
 module.exports = contract;

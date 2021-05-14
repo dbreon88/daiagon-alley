@@ -9,9 +9,9 @@ DAI is an ethereum based stable coin that is algorithmically pegged to the US do
 Daiagon Alley is a dashboard to compare the interest rate for those lending the DAI stable coin
 through 3 different providers:
 
-- Compound Finance
-- The Dai Savings Rate (by MakerDAO)
-- Aaave Protocal
+- [Compound Finance](https://compound.finance)
+- [The Dai Savings Rate (by MakerDAO)](https://makerdao.com/en/)
+- [Aaave Protocal](https://aave.com)
 
 Users can get a high level view of the current rates and can further explore the historical rates of these 3 platforms overtime.
 
@@ -69,9 +69,9 @@ If you want to run docker in the forefront so you can see the log in the command
 
 - Dive deeper into scalability optimization. Doing a throughout scalability "audit" would likely lead to many learnings and performance improvements. I have previously enjoyed using tools like [HoneyComb](https://www.honeycomb.io/overview/) which will be a great addition to this dev environment. Using this with a tool like k6 has been a game changer in past projects. A front end test suite as well. Jest is a nice framework and is already built into my react app.
 
-- Explore server side rendering options. My stack allows for flexible switching of server vs client side processing and rendering. **ALL** the kids these days are chatting about "SSR" apps and their support of fast initial page loads. While I do not think this application should totally become SSR, It deserves some trial as my site has a simple UI and is a read only site with no writes.
+- Explore server side rendering options. My stack allows for flexible switching of server vs client side processing and rendering. **ALL** the kids these days are chatting about "SSR" apps and their support of fast initial page loads. While I do not think this application should totally become SSR, It could be useful in some features as my site has a simple UI and is a read only site with no writes.
 
-- More db security. SQL injection prevention. Use prepared statements (which may speed things up as well)
+- Better database security. SQL injection prevention. Use of prepared statements (which may speed things up as well)
 
 - Make it more pretty: get on that css grind
 

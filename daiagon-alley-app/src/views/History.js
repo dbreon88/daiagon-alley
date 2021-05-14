@@ -1,3 +1,6 @@
+/* The history graph page that shows a graph of the three providers interest 
+rates over time */
+
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import RateGraph from "../components/RateGraph";
@@ -34,10 +37,10 @@ export default function History() {
   const loadData = async () => {
     try {
       const rateData = await getPastRates();
-      console.log("RATE DATA: ", rateData.data);
+      //console.log("RATE DATA: ", rateData.data);
       setData(rateData.data);
     } catch (err) {
-      console.log("Error fetching Data: ", err);
+      console.log("Error fetching past rates data: ", err);
       alert(
         "There was an error fetching the data for this page. Please try again later."
       );
@@ -45,7 +48,7 @@ export default function History() {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(); //On first page load, fetch the data from the model.
   }, []);
 
   return (

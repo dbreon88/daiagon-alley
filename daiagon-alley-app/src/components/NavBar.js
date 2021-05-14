@@ -1,3 +1,5 @@
+/*Nav bar component displayed on every page */
+
 import React from "react";
 
 import { AppBar, Typography, Toolbar } from "@material-ui/core";
@@ -33,44 +35,6 @@ const NavBar = () => {
                 Daiagon Alley
               </Link>
             </Typography>
-            {/* {user._id ? (
-              <>
-                <Typography variant="subtitle2" className={classes.title}>
-                  Logged in as {user.name}
-                </Typography>
-                <Button
-                  edge="end"
-                  color="inherit"
-                  className={classes.authButton}
-                  onClick={() => handleSignOut()}
-                >
-                  <Link className={classes.linkStyle} to="/">
-                    SignOut
-                  </Link>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  edge="end"
-                  color="inherit"
-                  className={classes.authButton}
-                >
-                  <Link className={classes.linkStyle} to="/signin">
-                    SignIn
-                  </Link>
-                </Button>
-                <Button
-                  edge="end"
-                  color="inherit"
-                  className={classes.authButton}
-                >
-                  <Link className={classes.linkStyle} to="/signup">
-                    SignUp
-                  </Link>
-                </Button>
-              </>
-            )} */}
           </Toolbar>
         </AppBar>
       </div>

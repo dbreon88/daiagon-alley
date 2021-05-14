@@ -1,3 +1,5 @@
+/* Line graph to display rates of interest over time*/
+
 import React, { memo } from "react";
 
 import { ResponsiveLine } from "@nivo/line";

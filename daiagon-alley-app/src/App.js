@@ -1,3 +1,4 @@
+/*  Main app component to set up the routes and nav bar */
 import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./views/Home.js";

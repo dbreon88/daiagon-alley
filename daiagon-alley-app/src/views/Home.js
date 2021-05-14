@@ -1,3 +1,6 @@
+/* This is the home page which displays the current rate for 
+all three of the providers side by side */
+
 import React, { useState, useEffect } from "react";
 import { Grid, Card } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,12 +43,12 @@ function Home() {
   const loadData = async () => {
     try {
       const rateData = await getCurrentRates();
-      console.log("CURRENT RATE DATA: ", rateData.data);
+      //console.log("CURRENT RATE DATA: ", rateData.data);
       setCompound(rateData.data[0] * 100);
       setDsr(rateData.data[1] * 100);
       setAave(rateData.data[2] * 100);
     } catch (err) {
-      console.log("Error fetching Data: ", err);
+      console.log("Error fetching current rate data: ", err);
       alert(
         "There was an error fetching the data for this page. Please try again later."
       );
@@ -53,7 +56,7 @@ function Home() {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(); //On first page load, fetch the data from the model.
   }, []);
   return (
     <>

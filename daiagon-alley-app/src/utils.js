@@ -1,10 +1,10 @@
 /**
- * This is a model to store the data received for
- * the database for the controller to talk to.
+Utils functions.
  */
 
-//This function formats the db query result if you want to just do one query and get all 3 results at once
-// and then format them after
+/* This function formats the db query result if you want to just do one query and get all 3 results at once
+and then format them after.
+Currently not in use */
 export const formatForChart = (queryResult) => {
   const formatted = [
     { id: "Compound", color: "hsl(97, 70%, 50%)", data: [] },

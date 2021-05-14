@@ -3,7 +3,7 @@
 const { BigNumber } = require("ethers");
 var utils = require("ethers").utils;
 
-/* These functions take in the returned rates from the contract and convert them into a percent interest rate
+/* These following functions take in the returned rates from the contract and convert them into a percent interest rate
 Note: the numbers are returned as Ethers type BigNumber and the BigNumber functions must be used. */
 const calculateCompound = (rate) => {
   rate = rate.toNumber(); //The compound rate should be small enough to convert to js number. CHECK THIS TODO

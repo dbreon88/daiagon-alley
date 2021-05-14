@@ -63,7 +63,7 @@ app.use(function (err, req, res, next) {
   <title>${err.status}</title>
   </head>
   <body>
-  <h1>${err.status}</h1>
+  <h2>${err.status}</h2>
   <p>${err.message} </p>
   </body>
   </html>`);

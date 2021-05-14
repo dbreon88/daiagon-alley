@@ -6,13 +6,14 @@ var express = require("express");
 var router = express.Router();
 const { ethers, BigNumber, utils, Uint8Array } = require("ethers");
 const contract = require("../ether.js");
+const { calculateAave } = require("../utils");
 
 /* The Aave smart contract returns the result in Ray 
 units. This converts Ray to a float representing the rate */
-const calculateAave = (rate, decimals) => {
-  const numberString = utils.formatUnits(rate, 27);
-  return parseFloat(numberString);
-};
+// const calculateAave = (rate, decimals) => {
+//   const numberString = utils.formatUnits(rate, 27);
+//   return parseFloat(numberString);
+// };
 
 //on GET call to /aave -> Call contract to get Aave liquidity rate aka interest rate
 router.get("/", async function (req, res, next) {

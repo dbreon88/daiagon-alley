@@ -2,8 +2,8 @@
 the ethers library. My contract is currently deployed on the kovan test 
 network.  
 
-Note: I am using the default ethers provider to connect to the kovan network
-this throttles and is not suitable for production. */
+Note: I am using the default ethers provider to connect to the kovan network.
+This throttles and is not suitable for production. */
 const { ethers, BigNumber } = require("ethers");
 var utils = require("ethers").utils;
 let provider = ethers.getDefaultProvider("kovan");
@@ -107,7 +107,6 @@ const calculateCompound = (rate) => {
 For more Info: https://docs.makerdao.com/smart-contract-modules/rates-module */
 const calculateDsr = (rate) => {
   rate = BigNumber.from("0x33B2E3CA2026060221A2192"); //Uncomment to test TODO RE COMMENT: Here is an example test rate from the docs to show that it properly converts it
-
   const numberString = utils.formatUnits(rate, 27);
   rate = parseFloat(numberString);
   rate = Math.pow(rate, 31536000);
@@ -135,16 +134,9 @@ my network with requests */
 //     daiSavingsRate = calculateDsr(daiSavingsRate);
 //     aaveRate = calculateAave(aaveRate); //check this TODO
 //     //console.log("Rates: ", compoundRate, daiSavingsRate, aaveRate);
-//     db.query(
+//     await db.query(
 //       "INSERT INTO rates(block_number, compound, dsr, aave) VALUES ($1, $2, $3, $4);",
-//       [blockNumber, compoundRate * 100, daiSavingsRate * 100, aaveRate * 100],
-//       (err, res) => {
-//         if (err) {
-//           throw { message: "Error Querying from database!", status: 500 };
-//         }
-//         // console.log("Insert Result: ", res);
-//         console.log("Inserted data for block #: ", blockNumber);
-//       }
+//       [blockNumber, compoundRate * 100, daiSavingsRate * 100, aaveRate * 100]
 //     );
 //   } catch (err) {
 //     console.error("Error Adding Newest Block Info to DB!! ", err);

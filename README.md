@@ -2,6 +2,8 @@
 
 Made By Dylan Breon
 
+### Background
+
 DAI is an ethereum based stable coin that is algorithmically pegged to the US dollar through the use of various smart contracts deployed on the Ethereum blockchain. It was created by MakerDAO and can be used just like any other Ethereum token in various transactions across different wallets. Among other uses, DAI can be utilized within any dapp that requires some sort of stable payment system. An important use case of DAI is its use as a stable way to hold decentralized currency. Its holders can avoid volatility of other offerings. This has led to the boom of platforms that allow users to lend and borrow DAI stablecoin. With these services one can borrow DAI and, because of its stable nature, pay it back at the same rate they borrowed it at (plus interest). Lenders can also lend with these platforms and earn interest! This lending interest rate is the focus of this project.
 
 Daiagon Alley is a dashboard to compare the interest rate for those lending the DAI stable coin
@@ -13,7 +15,7 @@ through 3 different providers:
 
 Users can get a high level view of the current rates and can further explore the historical rates of these 3 platforms overtime.
 
-_Getting started:_
+#### Getting started:
 
 Prerequisites:
 
@@ -65,9 +67,13 @@ If you want to run docker in the forefront so you can see the log in the command
 
 - Creating views in the postgres database: The application has commonly used queries that could be established as a materialized views for faster responses.
 
+- Dive deeper into scalability optimization. Doing a throughout scalability "audit" would likely lead to many learnings and performance improvements. I have previously enjoyed using tools like [HoneyComb](https://www.honeycomb.io/overview/) which will be a great addition to this dev environment. Using this with a tool like k6 has been a game changer in past projects. A front end test suite as well. Jest is a nice framework and is already built into my react app.
+
 - Explore server side rendering options. My stack allows for flexible switching of server vs client side processing and rendering. **ALL** the kids these days are chatting about "SSR" apps and their support of fast initial page loads. While I do not think this application should totally become SSR, It deserves some trial as my site has a simple UI and is a read only site with no writes.
 
 - Make it more pretty!!: get on that css grind
+
+---
 
 ### Other noteables:
 
@@ -75,13 +81,15 @@ If you want to run docker in the forefront so you can see the log in the command
 
 - I use Ethers' default provider for my API connection to the Kovan network: this caps use! If you run the application for a long time it will warn you as the rate updating event is constantly calling their API. It is best if you change my instantiation of ethers in ethers.js after creating your own account with a provider like Infura. You can also comment out the event listener in ethers.js if you are testing elsewhere or just playing around.
 
-- I committed my .env file. Not best practice for security reasons but makes the distribution of this simple, not production app much easier.
-
 - The live updating database feature is tricky to ship over GitHub. The DB will be empty when you clone this file so the graph will not be very accurate. I thought about going to all these past blocks and doing many smart contract calls in situations where the database wasn't up to date but, again, I wanted to think about a "real life" system and how this may function in production, not that my application is production ready...
+
+- Yes I committed my .env file. Not best practice for security reasons but makes the distribution of this simple, not production app much easier.
 
 - Be sure to run make migrate on first run or whenever you prune your docker download of volumes and containers. If you have issues with the table not yet created you can delete the container, volumes, and images and have another go. If I am having table initialization issues I will usually run:
 
-  `docker compose down && docker volume prune && docker image prune && docker container prune && docker system prune`
+```bash
+docker compose down && docker volume prune && docker image prune && docker container prune && docker system prune
+```
 
 and then:
 

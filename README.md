@@ -13,10 +13,11 @@ through 3 different providers:
 
 Users can get a high level view of the current rates and can further explore the historical rates of these 3 platforms overtime.
 
-# Getting started:
+_Getting started:_
 
 Prerequisites:
--Latest version of docker installed
+
+- Latest version of docker installed
 
 For the first run of the app, start by running the following command within the main directory:
 
@@ -80,7 +81,7 @@ If you want to run docker in the forefront so you can see the log in the command
 
 - Be sure to run make migrate on first run or whenever you prune your docker download of volumes and containers. If you have issues with the table not yet created you can delete the container, volumes, and images and have another go. If I am having table initialization issues I will usually run:
 
-  docker compose down && docker volume prune && docker image prune && docker container prune && docker system prune
+  `docker compose down && docker volume prune && docker image prune && docker container prune && docker system prune`
 
 and then:
 
@@ -88,7 +89,7 @@ and then:
 
 **USE THIS DOCKER COMMAND AT OWN RISK** This clears out volumes, images, containers and other docker data that could be important to other instances you have.
 
-Awesome Resources:
+#### Awesome Resources:
 
 - https://makerdao.com/en/
 
